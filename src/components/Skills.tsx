@@ -1,0 +1,115 @@
+import { motion } from 'framer-motion'
+
+const skillCategories = [
+  {
+    title: 'Programming Languages',
+    skills: [
+      { name: 'Python', level: 95 },
+      { name: 'Java', level: 75 },
+      { name: 'JavaScript', level: 80 },
+      { name: 'C', level: 70 },
+      { name: 'TypeScript', level: 75 },
+    ],
+  },
+  {
+    title: 'Machine Learning & AI',
+    skills: [
+      { name: 'Scikit-learn', level: 90 },
+      { name: 'Random Forest', level: 85 },
+      { name: 'Anomaly Detection', level: 85 },
+      { name: 'ROC-AUC / PR-AUC', level: 80 },
+      { name: 'Cost-Sensitive Learning', level: 75 },
+    ],
+  },
+  {
+    title: 'Deep Learning',
+    skills: [
+      { name: 'LSTM / RNN / GRU', level: 90 },
+      { name: 'CNN / ResNet / VGG', level: 85 },
+      { name: 'Transformer / BERT', level: 80 },
+      { name: 'Autoencoder / GAN', level: 75 },
+      { name: 'Attention Mechanisms', level: 80 },
+    ],
+  },
+  {
+    title: 'Generative AI & NLP',
+    skills: [
+      { name: 'LangChain', level: 85 },
+      { name: 'OpenAI / Gemini API', level: 88 },
+      { name: 'RAG Pipelines', level: 85 },
+      { name: 'Prompt Engineering', level: 90 },
+      { name: 'NLTK / SpaCy', level: 80 },
+    ],
+  },
+  {
+    title: 'Data Science & Analytics',
+    skills: [
+      { name: 'Pandas / NumPy', level: 90 },
+      { name: 'Matplotlib / Tableau', level: 80 },
+      { name: 'Feature Engineering', level: 85 },
+      { name: 'Data Cleaning', level: 90 },
+      { name: 'Class Imbalance', level: 80 },
+    ],
+  },
+  {
+    title: 'Tools & Platforms',
+    skills: [
+      { name: 'Flask / FastAPI', level: 85 },
+      { name: 'React.js', level: 80 },
+      { name: 'MySQL / MongoDB', level: 85 },
+      { name: 'Docker / Git', level: 80 },
+      { name: 'Hugging Face', level: 75 },
+    ],
+  },
+]
+
+export default function Skills() {
+  return (
+    <section id="skills" className="py-20 md:py-32 bg-navy-800/50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="section-heading">Skills & Expertise</h2>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {skillCategories.map((category, catIdx) => (
+              <motion.div
+                key={category.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: catIdx * 0.1, duration: 0.5 }}
+                className="card"
+              >
+                <h3 className="text-teal-400 font-mono text-sm mb-4">{category.title}</h3>
+                <div className="space-y-3">
+                  {category.skills.map((skill) => (
+                    <div key={skill.name}>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span className="text-slate-200">{skill.name}</span>
+                        <span className="text-slate-300">{skill.level}%</span>
+                      </div>
+                      <div className="h-1.5 bg-navy-700 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${skill.level}%` }}
+                          viewport={{ once: true }}
+                          transition={{ delay: catIdx * 0.1 + 0.3, duration: 0.8, ease: 'easeOut' }}
+                          className="h-full bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
