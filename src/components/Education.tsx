@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { GraduationCap, Award, ExternalLink, Download } from 'lucide-react'
+import { GraduationCap, Award } from 'lucide-react'
 
 const education = [
   {
@@ -120,36 +120,23 @@ export default function Education() {
                 viewport={{ once: true }}
               >
                 {certifications.map((cert) => (
-                  <motion.div
+                  <motion.a
                     key={cert.title}
+                    href={cert.driveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     variants={itemVariants}
-                    className="card"
+                    whileHover={{ x: 6, transition: { duration: 0.2 } }}
+                    className="card block cursor-pointer hover:border-teal-400/60 transition-colors"
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-2 h-2 rounded-full bg-teal-400 mt-2 flex-shrink-0" />
                       <div className="flex-1 min-w-0">
                         <h4 className="text-slate-100 text-sm font-medium">{cert.title}</h4>
-                        <p className="text-slate-300 text-xs mb-2">{cert.issuer} · {cert.year}</p>
-                        <div className="flex flex-wrap gap-2">
-                          <a
-                            href={cert.driveLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-xs text-teal-400 hover:text-teal-300 font-mono transition-colors"
-                          >
-                            <ExternalLink size={12} /> View
-                          </a>
-                          <a
-                            href={cert.pdfFile}
-                            download
-                            className="inline-flex items-center gap-1 text-xs text-slate-300 hover:text-teal-400 font-mono transition-colors"
-                          >
-                            <Download size={12} /> PDF
-                          </a>
-                        </div>
+                        <p className="text-slate-300 text-xs">{cert.issuer} · {cert.year}</p>
                       </div>
                     </div>
-                  </motion.div>
+                  </motion.a>
                 ))}
               </motion.div>
             </motion.div>
