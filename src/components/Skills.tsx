@@ -63,6 +63,24 @@ const skillCategories = [
   },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+  },
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+}
+
 export default function Skills() {
   return (
     <section id="skills" className="py-20 md:py-32 bg-navy-800/50">
@@ -75,14 +93,18 @@ export default function Skills() {
         >
           <h2 className="section-heading">Skills & Expertise</h2>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {skillCategories.map((category, catIdx) => (
+          <motion.div
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+          >
+            {skillCategories.map((category) => (
               <motion.div
                 key={category.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: catIdx * 0.1, duration: 0.5 }}
+                variants={cardVariants}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 className="card"
               >
                 <h3 className="text-teal-400 font-mono text-sm mb-4">{category.title}</h3>
@@ -98,7 +120,7 @@ export default function Skills() {
                           initial={{ width: 0 }}
                           whileInView={{ width: `${skill.level}%` }}
                           viewport={{ once: true }}
-                          transition={{ delay: catIdx * 0.1 + 0.3, duration: 0.8, ease: 'easeOut' }}
+                          transition={{ duration: 1, ease: 'easeOut' }}
                           className="h-full bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full"
                         />
                       </div>
@@ -107,7 +129,7 @@ export default function Skills() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

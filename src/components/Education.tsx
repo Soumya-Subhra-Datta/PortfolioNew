@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { GraduationCap, Award } from 'lucide-react'
+import { GraduationCap, Award, ExternalLink, Download } from 'lucide-react'
 
 const education = [
   {
@@ -11,11 +11,52 @@ const education = [
 ]
 
 const certifications = [
-  { title: 'NPTEL — Machine Learning', issuer: 'IIT Kharagpur', year: '2025' },
-  { title: 'NPTEL — Deep Learning', issuer: 'IIT Kharagpur', year: '2026' },
-  { title: 'Generative AI & Agentic Architectures', issuer: 'Here and Now AI', year: '2025' },
-  { title: 'Full Stack Software Development', issuer: 'Here and Now AI (GitHub Speckit)', year: '2026' },
+  {
+    title: 'NPTEL — Machine Learning',
+    issuer: 'IIT Kharagpur',
+    year: '2025',
+    driveLink: 'https://drive.google.com/file/d/1DE4S-CMir7hQPKegHtQA2YgjhCIGQ1a4/view',
+    pdfFile: '/PortfolioNew/cert-machine-learning.pdf',
+  },
+  {
+    title: 'NPTEL — Deep Learning',
+    issuer: 'IIT Kharagpur',
+    year: '2026',
+    driveLink: 'https://drive.google.com/file/d/1v57gXq99cEjXnqDk32P8uO9GvdFqURHb/view',
+    pdfFile: '/PortfolioNew/cert-deep-learning.pdf',
+  },
+  {
+    title: 'Generative AI & Agentic Architectures',
+    issuer: 'Here and Now AI',
+    year: '2025',
+    driveLink: 'https://drive.google.com/file/d/1-3ZozvbgBzuG_Xj4_y4eB9cPB8XFbUp2/view',
+    pdfFile: '/PortfolioNew/cert-gen-ai.pdf',
+  },
+  {
+    title: 'Full Stack Software Development',
+    issuer: 'Here and Now AI (GitHub Speckit)',
+    year: '2026',
+    driveLink: 'https://drive.google.com/file/d/1G2oG7XJUdykwEtkZmoGkDbs7Nh_tWR0I/view',
+    pdfFile: '/PortfolioNew/cert-fullstack.pdf',
+  },
 ]
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.5, ease: 'easeOut' },
+  },
+}
 
 export default function Education() {
   return (
@@ -30,49 +71,88 @@ export default function Education() {
           <h2 className="section-heading">Education & Certifications</h2>
 
           <div className="grid md:grid-cols-2 gap-10">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
               <div className="flex items-center gap-3 mb-6">
                 <GraduationCap className="w-6 h-6 text-teal-400" />
                 <h3 className="text-xl font-semibold text-slate-100">Education</h3>
               </div>
               <div className="space-y-6">
                 {education.map((edu) => (
-                  <div key={edu.degree} className="card">
+                  <motion.div
+                    key={edu.degree}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="card"
+                  >
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="text-slate-100 font-medium">{edu.degree}</h4>
                       <span className="text-teal-400 font-mono text-sm whitespace-nowrap ml-4">{edu.period}</span>
                     </div>
                     <p className="text-slate-300 text-sm mb-1">{edu.school}</p>
                     <p className="text-teal-400 font-mono text-sm">{edu.detail}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               <div className="flex items-center gap-3 mb-6">
                 <Award className="w-6 h-6 text-teal-400" />
                 <h3 className="text-xl font-semibold text-slate-100">Certifications</h3>
               </div>
-              <div className="space-y-3">
-                {certifications.map((cert, idx) => (
+              <motion.div
+                className="space-y-4"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {certifications.map((cert) => (
                   <motion.div
                     key={cert.title}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1, duration: 0.4 }}
-                    className="card flex items-start gap-4"
+                    variants={itemVariants}
+                    className="card"
                   >
-                    <div className="w-2 h-2 rounded-full bg-teal-400 mt-2 flex-shrink-0" />
-                    <div>
-                      <h4 className="text-slate-100 text-sm font-medium">{cert.title}</h4>
-                      <p className="text-slate-300 text-xs">{cert.issuer} · {cert.year}</p>
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-teal-400 mt-2 flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-slate-100 text-sm font-medium">{cert.title}</h4>
+                        <p className="text-slate-300 text-xs mb-2">{cert.issuer} · {cert.year}</p>
+                        <div className="flex flex-wrap gap-2">
+                          <a
+                            href={cert.driveLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-teal-400 hover:text-teal-300 font-mono transition-colors"
+                          >
+                            <ExternalLink size={12} /> View
+                          </a>
+                          <a
+                            href={cert.pdfFile}
+                            download
+                            className="inline-flex items-center gap-1 text-xs text-slate-300 hover:text-teal-400 font-mono transition-colors"
+                          >
+                            <Download size={12} /> PDF
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </motion.div>
       </div>

@@ -33,6 +33,23 @@ const projects = [
   },
 ]
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 },
+  },
+}
+
+const projectVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: 'easeOut' },
+  },
+}
+
 export default function Projects() {
   return (
     <section id="projects" className="py-20 md:py-32">
@@ -45,14 +62,18 @@ export default function Projects() {
         >
           <h2 className="section-heading">Featured Projects</h2>
 
-          <div className="space-y-8">
-            {projects.map((project, idx) => (
+          <motion.div
+            className="space-y-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+          >
+            {projects.map((project) => (
               <motion.div
                 key={project.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.15, duration: 0.5 }}
+                variants={projectVariants}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 className="card"
               >
                 <div className="flex flex-col lg:flex-row gap-6">
@@ -90,7 +111,7 @@ export default function Projects() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
