@@ -151,7 +151,7 @@ export default function Skills() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           transition={{ duration: 0.6 }}
         >
           <h2 className="section-heading">Skills & Expertise</h2>
@@ -161,7 +161,7 @@ export default function Skills() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
+            viewport={{ once: false, margin: '-50px' }}
           >
             {skillCategories.map((category) => (
               <motion.div

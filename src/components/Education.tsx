@@ -113,7 +113,7 @@ export default function Education() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           transition={{ duration: 0.6 }}
         >
           <h2 className="section-heading">Education & Certifications</h2>
@@ -122,7 +122,7 @@ export default function Education() {
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
               <div className="flex items-center gap-3 mb-6">
@@ -135,7 +135,7 @@ export default function Education() {
                     key={edu.degree}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false }}
                     transition={{ duration: 0.5 }}
                     className="card"
                   >
@@ -153,7 +153,7 @@ export default function Education() {
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <div className="flex items-center gap-3 mb-6">

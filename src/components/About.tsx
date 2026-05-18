@@ -44,7 +44,7 @@ export default function About() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: false, margin: '-100px' }}
           transition={{ duration: 0.6 }}
         >
           <h2 className="section-heading">About Me</h2>
@@ -62,7 +62,7 @@ export default function About() {
                   variants={textVariants}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true }}
+                  viewport={{ once: false }}
                   className="text-slate-300 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: text }}
                 />
@@ -74,7 +74,7 @@ export default function About() {
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={{ once: false }}
             >
               {highlights.map((item) => (
                 <motion.div

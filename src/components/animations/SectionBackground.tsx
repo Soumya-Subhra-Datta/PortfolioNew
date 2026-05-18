@@ -37,6 +37,7 @@ function BackgroundCanvas({ variant }: Props) {
     if (!ctx) return
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isMobile = window.innerWidth < 768
     let w = canvas.width = canvas.offsetWidth
     let h = canvas.height = canvas.offsetHeight
 
@@ -133,7 +134,8 @@ function BackgroundCanvas({ variant }: Props) {
     // Init based on variant
     function init() {
       if (variant === 'geometric') {
-        state = Array.from({ length: 12 }, () => ({
+        const count = isMobile ? 6 : 12
+        state = Array.from({ length: count }, () => ({
           x: Math.random() * w, y: Math.random() * h,
           size: Math.random() * 20 + 10, rotation: Math.random() * Math.PI * 2,
           speedX: (Math.random() - 0.5) * 0.3, speedY: (Math.random() - 0.5) * 0.3,
@@ -145,7 +147,7 @@ function BackgroundCanvas({ variant }: Props) {
 
       if (variant === 'grid-dots') {
         state = []
-        const spacing = 40
+        const spacing = isMobile ? 60 : 40
         for (let x = 0; x < w; x += spacing) {
           for (let y = 0; y < h; y += spacing) {
             ;(state as Dot[]).push({
@@ -158,7 +160,8 @@ function BackgroundCanvas({ variant }: Props) {
       }
 
       if (variant === 'orbs') {
-        state = Array.from({ length: 4 }, () => ({
+        const count = isMobile ? 2 : 4
+        state = Array.from({ length: count }, () => ({
           x: Math.random() * w, y: Math.random() * h,
           radius: Math.random() * 120 + 60,
           color: `rgba(100, 255, 218, 0.`,
@@ -168,7 +171,8 @@ function BackgroundCanvas({ variant }: Props) {
       }
 
       if (variant === 'particles') {
-        state = Array.from({ length: 20 }, () => ({
+        const count = isMobile ? 10 : 20
+        state = Array.from({ length: count }, () => ({
           x: Math.random() * w, y: Math.random() * h,
           size: Math.random() * 2 + 1, rotation: Math.random() * Math.PI * 2,
           speedX: 0, speedY: Math.random() * 0.4 + 0.2,
@@ -178,11 +182,15 @@ function BackgroundCanvas({ variant }: Props) {
       }
 
       if (variant === 'wave') {
-        state = [
-          { y: h * 0.3, amp: 20, freq: 0.02, speed: 1.5, phase: 0 },
-          { y: h * 0.5, amp: 15, freq: 0.025, speed: 1.2, phase: Math.PI / 3 },
-          { y: h * 0.7, amp: 25, freq: 0.015, speed: 1.8, phase: Math.PI / 1.5 },
+        const count = isMobile ? 2 : 3
+        const waves = [
+          { y: h * 0.3, amp: isMobile ? 12 : 20, freq: 0.02, speed: 1.5, phase: 0 },
+          { y: h * 0.5, amp: isMobile ? 10 : 15, freq: 0.025, speed: 1.2, phase: Math.PI / 3 },
         ]
+        if (count > 2) {
+          waves.push({ y: h * 0.7, amp: 25, freq: 0.015, speed: 1.8, phase: Math.PI / 1.5 })
+        }
+        state = waves
       }
     }
 
