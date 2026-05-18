@@ -1,21 +1,11 @@
-import { useEffect, useState } from 'react'
 import { ArrowDown, Download, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 import HeroParticles from './animations/HeroParticles'
 import HeroNameReveal from './animations/HeroNameReveal'
 import CircuitBackground from './animations/CircuitBackground'
-
-const roles = ['AI Engineer', 'ML Developer', 'Generative AI Specialist', 'Full-Stack Developer']
+import RoleTypewriter from './animations/RoleTypewriter'
 
 export default function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % roles.length)
-    }, 2500)
-    return () => clearInterval(interval)
-  }, [])
 
   return (
     <section id="home" className="min-h-screen flex items-center relative overflow-hidden pt-16">
@@ -45,17 +35,13 @@ export default function Hero() {
               <HeroNameReveal text="Datta" />
             </h1>
 
-            {/* Framer Motion role text */}
+            {/* Anime.js typewriter role text */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2, duration: 0.6 }}
-              className="h-10 md:h-12 mb-6"
             >
-              <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-300">
-                {roles[roleIndex]}
-              </span>
-              <span className="inline-block w-1 h-8 md:h-10 bg-teal-400 ml-1 animate-pulse" />
+              <RoleTypewriter />
             </motion.div>
 
             {/* Framer Motion description */}
