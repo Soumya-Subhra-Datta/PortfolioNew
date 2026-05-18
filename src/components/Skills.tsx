@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { animate } from 'animejs'
 import { motion } from 'framer-motion'
+import SectionBackground from './animations/SectionBackground'
 
 const skillCategories = [
   {
@@ -144,8 +145,9 @@ const cardVariants = {
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-20 md:py-32 bg-navy-800/50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="skills" className="py-20 md:py-32 bg-navy-800/50 relative overflow-hidden">
+      <SectionBackground variant="grid-dots" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}

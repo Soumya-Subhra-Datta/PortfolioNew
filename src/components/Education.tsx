@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { animate, utils } from 'animejs'
 import { motion } from 'framer-motion'
+import SectionBackground from './animations/SectionBackground'
 import { GraduationCap, Award } from 'lucide-react'
 
 const education = [
@@ -106,8 +107,9 @@ function CertCards({ certs }: { certs: typeof certifications }) {
 
 export default function Education() {
   return (
-    <section id="education" className="py-20 md:py-32 bg-navy-800/50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="education" className="py-20 md:py-32 bg-navy-800/50 relative overflow-hidden">
+      <SectionBackground variant="particles" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}

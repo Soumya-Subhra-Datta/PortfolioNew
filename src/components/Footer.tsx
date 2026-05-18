@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { animate } from 'animejs'
+import SectionBackground from './animations/SectionBackground'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -39,8 +40,9 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer ref={footerRef} className="py-8 border-t border-navy-700">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer ref={footerRef} className="py-8 border-t border-navy-700 relative overflow-hidden">
+      <SectionBackground variant="wave" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <a href="#home" className="footer-item text-teal-400 font-mono text-lg font-bold" style={{ opacity: 0 }}>
             &lt;SSD /&gt;

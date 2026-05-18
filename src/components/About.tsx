@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Code2, Brain, Cpu, Database } from 'lucide-react'
+import SectionBackground from './animations/SectionBackground'
 
 const highlights = [
   { icon: Brain, label: 'AI & ML', value: '3+ Years' },
@@ -37,8 +38,9 @@ const textVariants = {
 
 export default function About() {
   return (
-    <section id="about" className="py-20 md:py-32">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="py-20 md:py-32 relative overflow-hidden">
+      <SectionBackground variant="geometric" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { animate, utils } from 'animejs'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Linkedin, Github, Download } from 'lucide-react'
+import SectionBackground from './animations/SectionBackground'
 
 const contactInfo = [
   { icon: Mail, label: 'Email', value: 'soumyasubhradatta@gmail.com', href: 'mailto:soumyasubhradatta@gmail.com' },
@@ -185,8 +186,9 @@ function ResumeCard() {
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-20 md:py-32">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="py-20 md:py-32 relative overflow-hidden">
+      <SectionBackground variant="wave" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
