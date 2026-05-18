@@ -36,11 +36,6 @@
     font-family: 'Fira Code', monospace;
   }
 
-  .section-heading::before {
-    content: '0. ';
-    @apply text-teal-400;
-  }
-
   .section-heading::after {
     content: '';
     @apply block h-px bg-navy-600 mt-2 max-w-md;

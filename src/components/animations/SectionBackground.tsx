@@ -14,7 +14,7 @@ interface Shape {
 }
 
 interface Orb {
-  x: number; y: number; radius: number; color: string
+  x: number; y: number; radius: number
   dx: number; dy: number; opacity: number
 }
 
@@ -95,8 +95,8 @@ function BackgroundCanvas({ variant }: Props) {
           if (o.y < -o.radius || o.y > h + o.radius) o.dy *= -1
 
           const grad = ctx!.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.radius)
-          grad.addColorStop(0, o.color.replace('0.', String(o.opacity)))
-          grad.addColorStop(1, o.color.replace('0.', '0'))
+          grad.addColorStop(0, `rgba(100, 255, 218, ${o.opacity})`)
+          grad.addColorStop(1, `rgba(100, 255, 218, 0)`)
           ctx!.fillStyle = grad
           ctx!.beginPath(); ctx!.arc(o.x, o.y, o.radius, 0, Math.PI * 2); ctx!.fill()
         }
@@ -164,9 +164,8 @@ function BackgroundCanvas({ variant }: Props) {
         state = Array.from({ length: count }, () => ({
           x: Math.random() * w, y: Math.random() * h,
           radius: Math.random() * 120 + 60,
-          color: `rgba(100, 255, 218, 0.`,
           dx: (Math.random() - 0.5) * 0.4, dy: (Math.random() - 0.5) * 0.4,
-          opacity: Math.random() * 0.06 + 0.03,
+          opacity: Math.random() * 0.1 + 0.08,
         }))
       }
 
