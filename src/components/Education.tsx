@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+import { animate, utils } from 'animejs'
 import { motion } from 'framer-motion'
 import { GraduationCap, Award } from 'lucide-react'
 
@@ -16,46 +18,90 @@ const certifications = [
     issuer: 'IIT Kharagpur',
     year: '2025',
     driveLink: 'https://drive.google.com/file/d/1DE4S-CMir7hQPKegHtQA2YgjhCIGQ1a4/view',
-    pdfFile: '/PortfolioNew/cert-machine-learning.pdf',
   },
   {
     title: 'NPTEL — Deep Learning',
     issuer: 'IIT Kharagpur',
     year: '2026',
     driveLink: 'https://drive.google.com/file/d/1v57gXq99cEjXnqDk32P8uO9GvdFqURHb/view',
-    pdfFile: '/PortfolioNew/cert-deep-learning.pdf',
   },
   {
     title: 'Generative AI & Agentic Architectures',
     issuer: 'Here and Now AI',
     year: '2025',
     driveLink: 'https://drive.google.com/file/d/1-3ZozvbgBzuG_Xj4_y4eB9cPB8XFbUp2/view',
-    pdfFile: '/PortfolioNew/cert-gen-ai.pdf',
   },
   {
     title: 'Full Stack Software Development',
     issuer: 'Here and Now AI (GitHub Speckit)',
     year: '2026',
     driveLink: 'https://drive.google.com/file/d/1G2oG7XJUdykwEtkZmoGkDbs7Nh_tWR0I/view',
-    pdfFile: '/PortfolioNew/cert-fullstack.pdf',
   },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12 },
-  },
-}
+function CertCards({ certs }: { certs: typeof certifications }) {
+  const containerRef = useRef<HTMLDivElement>(null)
 
-const itemVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.5, ease: 'easeOut' },
-  },
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const cards = container.querySelectorAll<HTMLAnchorElement>('.cert-card')
+    if (cards.length === 0) return
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (prefersReduced) {
+      cards.forEach((c) => {
+        c.style.opacity = '1'
+        c.style.transform = 'none'
+      })
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          animate(cards, {
+            opacity: [0, 1],
+            translateX: [-30, 0],
+            translateY: [20, 0],
+            easing: 'easeOutCubic',
+            duration: 600,
+            delay: utils.stagger(120),
+          })
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.2 }
+    )
+
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={containerRef} className="space-y-4">
+      {certs.map((cert) => (
+        <a
+          key={cert.title}
+          href={cert.driveLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cert-card card block cursor-pointer hover:border-teal-400/60 transition-colors"
+          style={{ opacity: 0 }}
+        >
+          <div className="flex items-start gap-3">
+            <div className="w-2 h-2 rounded-full bg-teal-400 mt-2 flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <h4 className="text-slate-100 text-sm font-medium">{cert.title}</h4>
+              <p className="text-slate-300 text-xs">{cert.issuer} · {cert.year}</p>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  )
 }
 
 export default function Education() {
@@ -112,33 +158,7 @@ export default function Education() {
                 <Award className="w-6 h-6 text-teal-400" />
                 <h3 className="text-xl font-semibold text-slate-100">Certifications</h3>
               </div>
-              <motion.div
-                className="space-y-4"
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                {certifications.map((cert) => (
-                  <motion.a
-                    key={cert.title}
-                    href={cert.driveLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variants={itemVariants}
-                    whileHover={{ x: 6, transition: { duration: 0.2 } }}
-                    className="card block cursor-pointer hover:border-teal-400/60 transition-colors"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full bg-teal-400 mt-2 flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-slate-100 text-sm font-medium">{cert.title}</h4>
-                        <p className="text-slate-300 text-xs">{cert.issuer} · {cert.year}</p>
-                      </div>
-                    </div>
-                  </motion.a>
-                ))}
-              </motion.div>
+              <CertCards certs={certifications} />
             </motion.div>
           </div>
         </motion.div>

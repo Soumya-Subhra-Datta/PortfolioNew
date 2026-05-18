@@ -65,6 +65,19 @@
     @apply bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent;
   }
 
+  .cta-glow {
+    box-shadow: 0 0 8px rgba(100, 255, 218, 0.15);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .btn-primary.cta-glow:hover {
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+  }
+
+  .btn-secondary.cta-glow:hover {
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.4);
+  }
+
   .glow {
     box-shadow: 0 0 20px rgba(100, 255, 218, 0.1);
   }

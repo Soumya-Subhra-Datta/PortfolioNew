@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+import { animate } from 'animejs'
 import { motion } from 'framer-motion'
 
 const skillCategories = [
@@ -63,6 +65,65 @@ const skillCategories = [
   },
 ]
 
+function SkillBar({ name, level, index }: { name: string; level: number; index: number }) {
+  const barRef = useRef<HTMLDivElement>(null)
+  const labelRef = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const bar = barRef.current
+    const label = labelRef.current
+    if (!bar || !label) return
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (prefersReduced) {
+            bar.style.width = `${level}%`
+            label.textContent = `${level}%`
+          } else {
+            animate(bar, {
+              width: [`0%`, `${level}%`],
+              easing: 'easeOutCubic',
+              duration: 1000,
+              delay: index * 80,
+            })
+            animate(label, {
+              textContent: [0, level],
+              easing: 'easeOutCubic',
+              duration: 1000,
+              delay: index * 80,
+              round: 1,
+            })
+          }
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    observer.observe(bar)
+    return () => observer.disconnect()
+  }, [level, index])
+
+  return (
+    <div>
+      <div className="flex justify-between text-sm mb-1">
+        <span className="text-slate-200">{name}</span>
+        <span ref={labelRef} className="text-slate-300">0%</span>
+      </div>
+      <div className="h-1.5 bg-navy-700 rounded-full overflow-hidden">
+        <div
+          ref={barRef}
+          className="h-full bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full"
+          style={{ width: '0%' }}
+        />
+      </div>
+    </div>
+  )
+}
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -109,22 +170,8 @@ export default function Skills() {
               >
                 <h3 className="text-teal-400 font-mono text-sm mb-4">{category.title}</h3>
                 <div className="space-y-3">
-                  {category.skills.map((skill) => (
-                    <div key={skill.name}>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-slate-200">{skill.name}</span>
-                        <span className="text-slate-300">{skill.level}%</span>
-                      </div>
-                      <div className="h-1.5 bg-navy-700 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${skill.level}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1, ease: 'easeOut' }}
-                          className="h-full bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full"
-                        />
-                      </div>
-                    </div>
+                  {category.skills.map((skill, idx) => (
+                    <SkillBar key={skill.name} name={skill.name} level={skill.level} index={idx} />
                   ))}
                 </div>
               </motion.div>

@@ -1,5 +1,7 @@
-import { motion } from 'framer-motion'
+import { useRef, useCallback } from 'react'
+import { animate } from 'animejs'
 import { ExternalLink, Github } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 const projects = [
   {
@@ -41,6 +43,98 @@ const projects = [
   },
 ]
 
+function ProjectCard({ project }: { project: typeof projects[0] }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current
+    if (!card) return
+
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+    const rotateX = ((y - centerY) / centerY) * -6
+    const rotateY = ((x - centerX) / centerX) * 6
+
+    animate(card, {
+      rotateX,
+      rotateY,
+      scale: 1.02,
+      duration: 300,
+      easing: 'easeOutCubic',
+    })
+
+    if (glowRef.current) {
+      glowRef.current.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(100,255,218,0.12), transparent 60%)`
+    }
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    const card = cardRef.current
+    if (!card) return
+
+    animate(card, {
+      rotateX: 0,
+      rotateY: 0,
+      scale: 1,
+      duration: 400,
+      easing: 'easeOutCubic',
+    })
+
+    if (glowRef.current) {
+      glowRef.current.style.background = 'transparent'
+    }
+  }, [])
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="card relative overflow-hidden"
+      style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
+    >
+      <div ref={glowRef} className="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-lg" />
+      <div className="flex flex-col lg:flex-row gap-6 relative z-10">
+        <div className="flex-1">
+          <h3 className="text-xl font-semibold text-slate-100 mb-2">{project.title}</h3>
+          <p className="text-slate-300 text-sm leading-relaxed mb-4">{project.description}</p>
+
+          <div className="flex flex-wrap gap-2 mb-4">
+            {project.tags.map((tag) => (
+              <span key={tag} className="px-2 py-1 bg-teal-400/10 text-teal-400 text-xs font-mono rounded">
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs py-2 px-4 cta-glow">
+              <Github size={14} /> Source
+            </a>
+            {project.link && (
+              <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs py-2 px-4 cta-glow">
+                <ExternalLink size={14} /> Live Demo
+              </a>
+            )}
+          </div>
+        </div>
+
+        <div className="lg:w-48 flex flex-row lg:flex-col gap-2">
+          {project.highlights.map((h) => (
+            <div key={h} className="flex-1 bg-navy-700/50 rounded px-3 py-2 text-center">
+              <span className="text-xs text-teal-400 font-mono">{h}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -78,45 +172,8 @@ export default function Projects() {
             viewport={{ once: true, margin: '-50px' }}
           >
             {projects.map((project) => (
-              <motion.div
-                key={project.title}
-                variants={projectVariants}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="card"
-              >
-                <div className="flex flex-col lg:flex-row gap-6">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-slate-100 mb-2">{project.title}</h3>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-4">{project.description}</p>
-
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tags.map((tag) => (
-                        <span key={tag} className="px-2 py-1 bg-teal-400/10 text-teal-400 text-xs font-mono rounded">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex flex-wrap gap-3">
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs py-2 px-4">
-                        <Github size={14} /> Source
-                      </a>
-                      {project.link && (
-                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs py-2 px-4">
-                          <ExternalLink size={14} /> Live Demo
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="lg:w-48 flex flex-row lg:flex-col gap-2">
-                    {project.highlights.map((h) => (
-                      <div key={h} className="flex-1 bg-navy-700/50 rounded px-3 py-2 text-center">
-                        <span className="text-xs text-teal-400 font-mono">{h}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              <motion.div key={project.title} variants={projectVariants}>
+                <ProjectCard project={project} />
               </motion.div>
             ))}
           </motion.div>

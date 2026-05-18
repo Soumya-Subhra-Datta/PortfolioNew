@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 import { ArrowDown, Download, ExternalLink } from 'lucide-react'
+import { motion } from 'framer-motion'
+import HeroParticles from './animations/HeroParticles'
+import HeroNameReveal from './animations/HeroNameReveal'
+import CircuitBackground from './animations/CircuitBackground'
 
 const roles = ['AI Engineer', 'ML Developer', 'Generative AI Specialist', 'Full-Stack Developer']
 
@@ -15,38 +19,72 @@ export default function Hero() {
 
   return (
     <section id="home" className="min-h-screen flex items-center relative overflow-hidden pt-16">
-      <div className="absolute inset-0 opacity-20">
+      {/* Anime.js backgrounds */}
+      <CircuitBackground />
+      <HeroParticles />
+
+      {/* Framer Motion background blobs */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-teal-400 rounded-full blur-[128px] animate-float" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500 rounded-full blur-[128px] animate-float" style={{ animationDelay: '1.5s' }} />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
           <div className="flex-1 order-2 md:order-1">
-            <p className="text-teal-400 font-mono text-sm md:text-base mb-4 animate-fade-in">Hi, my name is</p>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-100 mb-3 animate-slide-up">
-              Soumya Subhra<br />Datta
+            {/* Anime.js stagger fade */}
+            <p className="text-teal-400 font-mono text-sm md:text-base mb-4">
+              Hi, my name is
+            </p>
+
+            {/* Anime.js letter-by-letter */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-100 mb-1">
+              <HeroNameReveal text="Soumya Subhra" />
             </h1>
-            <div className="h-10 md:h-12 mb-6">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gradient mb-3">
+              <HeroNameReveal text="Datta" />
+            </h1>
+
+            {/* Framer Motion role text */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.2, duration: 0.6 }}
+              className="h-10 md:h-12 mb-6"
+            >
               <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-300">
                 {roles[roleIndex]}
               </span>
               <span className="inline-block w-1 h-8 md:h-10 bg-teal-400 ml-1 animate-pulse" />
-            </div>
-            <p className="text-slate-300 text-base md:text-lg max-w-xl mb-8 leading-relaxed">
+            </motion.div>
+
+            {/* Framer Motion description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.4, duration: 0.6 }}
+              className="text-slate-300 text-base md:text-lg max-w-xl mb-8 leading-relaxed"
+            >
               Building intelligent AI systems — from RAG pipelines and LSTM-based threat detection to full-stack ML platforms. Passionate about turning data into impactful, real-world solutions.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <a href="#contact" className="btn-secondary">
+            </motion.p>
+
+            {/* Framer Motion CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.6, duration: 0.6 }}
+              className="flex flex-wrap gap-4"
+            >
+              <a href="#contact" className="btn-secondary cta-glow">
                 Get In Touch <ArrowDown size={16} />
               </a>
-              <a href="/PortfolioNew/Soumya_Subhra_Datta_Resume.pdf" download className="btn-primary">
+              <a href="/PortfolioNew/Soumya_Subhra_Datta_Resume.pdf" download className="btn-primary cta-glow">
                 <Download size={16} /> Resume
               </a>
-              <a href="https://github.com/Soumya-Subhra-Datta" target="_blank" rel="noopener noreferrer" className="btn-primary">
+              <a href="https://github.com/Soumya-Subhra-Datta" target="_blank" rel="noopener noreferrer" className="btn-primary cta-glow">
                 <ExternalLink size={16} /> GitHub
               </a>
-            </div>
+            </motion.div>
           </div>
 
           <div className="order-1 md:order-2 flex-shrink-0">
