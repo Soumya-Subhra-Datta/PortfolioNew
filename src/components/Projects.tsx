@@ -7,7 +7,7 @@ const projects = [
     description: 'Full-stack AI assistant with voice, memory, task management, and PWA support. Built with React + Vite frontend and Node.js/Express + MySQL backend. Features AI chat via Cerebras API, real-time voice recognition, emotional state orb, personal memory system, file & CSV analysis with auto-generated charts, web search, and local PC automation. Multi-user with JWT auth, dark futuristic UI, responsive (320px–1440px+), and deployed as a PWA with offline support.',
     tags: ['React', 'Vite', 'Node.js', 'MySQL', 'Cerebras AI', 'PWA', 'Voice AI', 'JWT'],
     github: 'https://github.com/Soumya-Subhra-Datta/JARVIS',
-    link: 'https://jarvis-seven-lake.vercel.app',
+    link: 'https://jarvis-seven-lake.vercel.app/login',
     highlights: ['AI Chat + Voice', 'Memory System', 'File/CSV Analysis', 'PWA Offline'],
   },
   {
