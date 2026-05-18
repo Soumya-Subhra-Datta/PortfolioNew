@@ -156,7 +156,7 @@ const projectVariants = {
 export default function Projects() {
   return (
     <section id="projects" className="py-20 md:py-32 relative overflow-hidden">
-      <SectionBackground variant="orbs" />
+      <SectionBackground variant="geometric" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
