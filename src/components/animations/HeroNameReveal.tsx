@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react'
-import { animate, utils } from 'animejs'
+import { motion } from 'framer-motion'
 
 interface Props {
   text: string
@@ -7,45 +6,31 @@ interface Props {
 }
 
 export default function HeroNameReveal({ text, className = '' }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    const letters = el.querySelectorAll('.anime-letter')
-    if (letters.length === 0) return
-
-    if (prefersReduced) {
-      letters.forEach((l) => (l as HTMLElement).style.opacity = '1')
-      return
-    }
-
-    const anim = animate(letters, {
-      opacity: [0, 1],
-      translateY: [40, 0],
-      rotateX: [90, 0],
-      easing: 'easeOutExpo',
-      duration: 800,
-      delay: utils.stagger(50, { start: 400 }),
-    })
-
-    return () => { void anim.cancel() }
-  }, [text])
+  const letters = text.split('')
 
   return (
-    <div ref={containerRef} className={className}>
-      {text.split('').map((char, i) => (
-        <span
+    <motion.div
+      className={className}
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.05, delayChildren: 0.4 } },
+      }}
+    >
+      {letters.map((char, i) => (
+        <motion.span
           key={i}
-          className="anime-letter inline-block"
-          style={{ opacity: 0, perspective: '500px' }}
+          className="inline-block"
+          variants={{
+            hidden: { opacity: 0, y: 40, rotateX: 90 },
+            visible: { opacity: 1, y: 0, rotateX: 0 },
+          }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
         >
           {char === ' ' ? '\u00A0' : char}
-        </span>
+        </motion.span>
       ))}
-    </div>
+    </motion.div>
   )
 }
