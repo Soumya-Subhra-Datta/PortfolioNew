@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { createTimer } from 'animejs'
 
 interface TrailPoint {
   x: number
@@ -17,15 +16,14 @@ interface Ripple {
 
 export default function CursorEffect() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const timerRef = useRef<ReturnType<typeof createTimer> | null>(null)
   const trailRef = useRef<TrailPoint[]>([])
   const ripplesRef = useRef<Ripple[]>([])
   const posRef = useRef({ x: -100, y: -100, active: false })
-  const prefersReduced = useRef(false)
+  const rafRef = useRef(0)
 
   useEffect(() => {
-    prefersReduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced.current) return
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) return
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -33,8 +31,8 @@ export default function CursorEffect() {
     if (!ctx) return
 
     const resize = () => {
-      canvas!.width = window.innerWidth
-      canvas!.height = window.innerHeight
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
     }
     resize()
     window.addEventListener('resize', resize)
@@ -56,7 +54,7 @@ export default function CursorEffect() {
     const onDown = (e: MouseEvent | TouchEvent) => {
       let x: number, y: number
       if ('touches' in e) {
-        const t = e.touches[0]
+        const t = e.changedTouches[0]
         if (!t) return
         x = t.clientX
         y = t.clientY
@@ -83,48 +81,50 @@ export default function CursorEffect() {
     window.addEventListener('mouseleave', onLeave)
 
     const draw = () => {
-      ctx!.clearRect(0, 0, canvas!.width, canvas!.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       if (posRef.current.active) {
         trailRef.current.push({ x: posRef.current.x, y: posRef.current.y, life: 1 })
       }
 
-      for (let i = trailRef.current.length - 1; i >= 0; i--) {
-        const p = trailRef.current[i]
+      const trail = trailRef.current
+      for (let i = trail.length - 1; i >= 0; i--) {
+        const p = trail[i]
         p.life -= 0.035
         if (p.life <= 0) {
-          trailRef.current.splice(i, 1)
+          trail.splice(i, 1)
           continue
         }
-        ctx!.beginPath()
-        ctx!.arc(p.x, p.y, 3 * p.life, 0, Math.PI * 2)
-        ctx!.fillStyle = `rgba(100, 255, 218, ${p.life * 0.35})`
-        ctx!.fill()
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, 3 * p.life, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(100, 255, 218, ${p.life * 0.35})`
+        ctx.fill()
       }
-      if (trailRef.current.length > 60) {
-        trailRef.current.splice(0, trailRef.current.length - 60)
-      }
+      if (trail.length > 60) trail.splice(0, trail.length - 60)
 
-      for (let i = ripplesRef.current.length - 1; i >= 0; i--) {
-        const r = ripplesRef.current[i]
+      const ripples = ripplesRef.current
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const r = ripples[i]
         r.radius += 1.5
         r.life -= 0.018
         if (r.life <= 0) {
-          ripplesRef.current.splice(i, 1)
+          ripples.splice(i, 1)
           continue
         }
-        ctx!.beginPath()
-        ctx!.arc(r.x, r.y, r.radius, 0, Math.PI * 2)
-        ctx!.strokeStyle = `rgba(100, 255, 218, ${r.life * 0.5})`
-        ctx!.lineWidth = 1.5
-        ctx!.stroke()
+        ctx.beginPath()
+        ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2)
+        ctx.strokeStyle = `rgba(100, 255, 218, ${r.life * 0.5})`
+        ctx.lineWidth = 1.5
+        ctx.stroke()
       }
+
+      rafRef.current = requestAnimationFrame(draw)
     }
 
-    timerRef.current = createTimer({ duration: Infinity, onUpdate: draw })
+    rafRef.current = requestAnimationFrame(draw)
 
     return () => {
-      timerRef.current?.cancel()
+      cancelAnimationFrame(rafRef.current)
       window.removeEventListener('resize', resize)
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('touchmove', onMove)
