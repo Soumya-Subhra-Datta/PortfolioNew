@@ -3,10 +3,11 @@ import { animate, utils } from 'animejs'
 
 interface Props {
   text: string
+  className?: string
 }
 
-export default function HeroNameReveal({ text }: Props) {
-  const containerRef = useRef<HTMLHeadingElement>(null)
+export default function HeroNameReveal({ text, className = '' }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const el = containerRef.current
@@ -35,7 +36,7 @@ export default function HeroNameReveal({ text }: Props) {
   }, [text])
 
   return (
-    <h1 ref={containerRef} className="inline">
+    <div ref={containerRef} className={className}>
       {text.split('').map((char, i) => (
         <span
           key={i}
@@ -45,6 +46,6 @@ export default function HeroNameReveal({ text }: Props) {
           {char === ' ' ? '\u00A0' : char}
         </span>
       ))}
-    </h1>
+    </div>
   )
 }

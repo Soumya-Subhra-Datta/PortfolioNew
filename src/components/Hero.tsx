@@ -28,12 +28,8 @@ export default function Hero() {
             </p>
 
             {/* Anime.js letter-by-letter */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-100 mb-1">
-              <HeroNameReveal text="Soumya Subhra" />
-            </h1>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gradient mb-3">
-              <HeroNameReveal text="Datta" />
-            </h1>
+            <HeroNameReveal text="Soumya Subhra" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-100 mb-1" />
+            <HeroNameReveal text="Datta" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gradient mb-3" />
 
             {/* Anime.js typewriter role text */}
             <motion.div
