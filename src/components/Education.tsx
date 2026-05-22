@@ -9,7 +9,7 @@ const education = [
     degree: 'B.E. in Computer Science & Engineering (AI)',
     school: 'Sathyabama Institute of Science and Technology, Chennai',
     period: '2023 – 2027',
-    detail: 'CGPA: 7.85',
+    detail: 'CGPA: 7.88',
   },
 ]
 
